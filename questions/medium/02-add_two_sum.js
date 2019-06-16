@@ -81,19 +81,24 @@ class LinkedList {
 }
 // l1 -- [2,3,3]
 // l2 -- [5, 2, 2]
+// 先构造一个链表L1
 const l1 = new LinkedList()
-
+// 向链表追加数据
 l1.append(2)
 l1.append(3)
 l1.append(3)
+l1.append(6)
 
 console.log(l1.toString())
 
+// 先构造一个链表L2
 const l2 = new LinkedList()
-
+// 向链表追加数据
 l2.append(5)
 l2.append(9)
-l2.append(2)
+l2.append(7)
+l2.append(4)
+l2.append(5)
 console.log(l2.toString())
 
 var addTwoNumbers = function(l1, l2) {
@@ -102,10 +107,15 @@ var addTwoNumbers = function(l1, l2) {
   let currentNodeL2 = l2.head
   while (currentNodeL1 || currentNodeL2) {
     let sum = 0
-    if (currentNodeL1.flag || currentNodeL2.flag) {
+    if (
+      (currentNodeL1 && currentNodeL1.flag) ||
+      (currentNodeL2 && currentNodeL2.flag)
+    ) {
       sum = +1
     }
-    sum = sum + currentNodeL1.value + currentNodeL2.value
+    const tempCurVal1 = currentNodeL1 ? currentNodeL1.value : 0
+    const tempCurVal2 = currentNodeL2 ? currentNodeL2.value : 0
+    sum = sum + tempCurVal1 + tempCurVal2
     let flag = 0
     if (sum > 9) {
       sum = sum % 10
@@ -113,11 +123,19 @@ var addTwoNumbers = function(l1, l2) {
     }
 
     l3.append(sum)
-    currentNodeL1 = currentNodeL1.next
-    currentNodeL2 = currentNodeL2.next
+    currentNodeL1 = currentNodeL1 && currentNodeL1.next
+    currentNodeL2 = currentNodeL2 && currentNodeL2.next
     if (flag) {
-      currentNodeL1.flag = flag
-      currentNodeL2.flag = flag
+      if (currentNodeL1) {
+        currentNodeL1.flag = flag
+      }
+      if (currentNodeL2) {
+        currentNodeL2.flag = flag
+      }
+      // 进阶且都没节点的情况
+      if (!currentNodeL1 && !currentNodeL2) {
+        currentNodeL1 = new LinkedListNode(flag)
+      }
     }
   }
   return l3

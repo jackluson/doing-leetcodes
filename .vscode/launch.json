@@ -7,6 +7,6 @@
     "type": "node",
     "request": "launch",
     "name": "Launch Program",
-    "program": "${workspaceRoot}/easy/two_sum.js"
+    "program": "${workspaceRoot}/questions/medium/03-length_of_longest_substring.js"
   }]
 }
