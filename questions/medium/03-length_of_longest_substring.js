@@ -36,29 +36,19 @@ var lengthOfLongestSubstring = function(s) {
     let currentSubstr = s[i]
     for (let j = i + 1; j < s.length; j++) {
       if (currentSubstr.indexOf(s[j]) > -1) {
-        if (currentSubstr.length > maxNum) {
-          maxNum = currentSubstr.length
-        }
-        // objStr[currentSubstr] = currentSubstr.length
+        maxNum = Math.max(maxNum, currentSubstr.length)
         break
       } else {
         currentSubstr = currentSubstr + s[j]
       }
       // 最后一个字符时
       if (j === s.length - 1) {
-        // objStr[currentSubstr] = currentSubstr.length
-        if (currentSubstr.length > maxNum) {
-          maxNum = currentSubstr.length
-        }
+        maxNum = Math.max(maxNum, currentSubstr.length)
       }
     }
     // 第一层遍历最后一个字符时
     if (i + 1 === s.length && currentSubstr.length > 0) {
-      // objStr[currentSubstr] = currentSubstr.length
-      //
-      if (currentSubstr.length > maxNum) {
-        maxNum = currentSubstr.length
-      }
+      maxNum = Math.max(maxNum, currentSubstr.length)
     }
   }
   // const maxNum = findMaxNumFromObj(objStr)
@@ -78,6 +68,7 @@ var lengthOfLongestSubstring2 = function(s) {
   }
   return num
 }
+
 // 方法三：优化的滑动窗口
 var lengthOfLongestSubstring3 = function(s) {
   let num = 0
@@ -103,4 +94,24 @@ console.timeEnd()
 
 console.time()
 console.log(lengthOfLongestSubstring3('jiosdijfo'))
+console.timeEnd()
+console.time()
+
+// 比较 两种写法的执行时间
+let numMax = 0
+for (let i = 0; i < 10000; i++) {
+  const tempNum = Math.random() * 100
+  if (tempNum > numMax) {
+    numMax = tempNum
+  }
+}
+console.timeEnd()
+
+console.time()
+
+let numMax1 = 0
+for (let i = 0; i < 10000; i++) {
+  const tempNum = Math.random() * 100
+  numMax1 = Math.random(numMax1, tempNum)
+}
 console.timeEnd()
