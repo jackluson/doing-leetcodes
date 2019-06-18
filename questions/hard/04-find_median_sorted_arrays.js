@@ -14,11 +14,14 @@ var findMedianSortedArrays = function(nums1, nums2) {
   const len1 = nums1.length // [2,3,4,5,9,22,44,55]
   const len2 = nums2.length // [1,4,14,18,25,67]
   const minLen = Math.min(len1, len2)
-  const sortedArray = nums1
-  // 思路： 找出两位数组的中位数，
-  // for (let i = 0; i < minLen; i++) {
-  //   if (nums1[i] < nums2[i]) {
-  //   }
-  //   sortedArray.push()
-  // }
+  const sortedArray = len2 > len1 ? nums2 : nums1
+  const minSortedArray = len2 > len1 ? nums1 : nums2
+
+  // 思路： 用最长的那个数组循环，一一对应比较比较大小，然后插入
+  for (let i = 0; i < minLen; i++) {
+    const splicePos = minSortedArray[i] > sortedArray[i] ? i + 1 : i
+    sortedArray.splice(splicePos, 0, minSortedArray[i])
+  }
+  console.log(sortedArray)
 }
+findMedianSortedArrays([2, 5, 6, 9, 12], [4, 6, 7, 10])

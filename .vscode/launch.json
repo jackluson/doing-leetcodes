@@ -7,6 +7,6 @@
     "type": "node",
     "request": "launch",
     "name": "Launch Program",
-    "program": "${workspaceRoot}/questions/medium/03-length_of_longest_substring.js"
+    "program": "${workspaceRoot}/questions/hard/04-find_median_sorted_arrays.js"
   }]
 }
