@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  // parser: "babel-eslint",
+  parser: "babel-eslint",
   parserOptions: {
     sourceType: 'module',
     allowImportExportEverywhere: true //ignore eslint error: 'import' and 'export' may only appear at the top level
