@@ -23,7 +23,6 @@
 输出: [3,2,1]
 */
 
-
 function TreeNode(val) {
   this.val = val;
   this.left = this.right = null;
@@ -33,11 +32,14 @@ function TreeNode(val) {
  * @return {number[]}
  */
 var postorderTraversal = function (root) {
-
-  return root ? [...postorderTraversal(root.right), ...postorderTraversal(root.left), root.val] : []
-
+  return root
+    ? [
+        ...postorderTraversal(root.right),
+        ...postorderTraversal(root.left),
+        root.val,
+      ]
+    : [];
 };
-
 
 const root = {
   val: 1,
@@ -45,7 +47,7 @@ const root = {
   right: {
     val: 2,
     left: new TreeNode(3),
-    right: null,
+    right: new TreeNode(4),
   },
-}
-console.log(postorderTraversal(root))
+};
+console.log(postorderTraversal(root));

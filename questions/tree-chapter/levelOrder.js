@@ -29,7 +29,6 @@
 ]
 */
 
-
 function TreeNode(val) {
   this.val = val;
   this.left = this.right = null;
@@ -47,25 +46,25 @@ function TreeNode(val) {
  * @return {number[][]}
  */
 var levelOrder = function (root) {
-
-  let res = [], arr = [];
+  let res = [],
+    arr = [];
   root && arr.push(root);
   while (arr.length > 0) {
-    let n = arr.length;
-    let nowLevel = [];
+    // let n = arr.length;
+    // console.log("n ", n);
+    // let nowLevel = [];
 
-    while (n > 0) {
-      var node = arr.shift();
-      nowLevel.push(node.val);
-      node.left && arr.push(node.left);
-      node.right && arr.push(node.right);
-      n--;
-    }
-    res.push(nowLevel);
+    // while (n > 0) {
+    var node = arr.shift();
+    res.push(node.val);
+    node.left && arr.push(node.left);
+    node.right && arr.push(node.right);
+    // n--;
+    // }
+    // res.push(nowLevel);
   }
   return res;
 };
-
 
 const root = {
   val: 1,
@@ -79,5 +78,5 @@ const root = {
     left: new TreeNode(6),
     right: null,
   },
-}
-console.log(levelOrder(root))
+};
+console.log(levelOrder(root));
