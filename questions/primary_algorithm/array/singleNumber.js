@@ -32,15 +32,22 @@
  * @return {number}
  */
 var singleNumber = function (nums) {
-  let singleNum = nums[0];
-  for (let index = 1; index < nums.length; index++) {
-    let findIndex = nums.indexOf(singleNum, index);
-    if (findIndex > -1) {
-      nums.splice(findIndex, 1);  // 删除之后再改变singleNum，防止两个相邻的数字；
-      singleNum = nums[index];
-    } else {
-      return singleNum
-    }
+  // let singleNum = nums[0];
+  // for (let index = 1; index < nums.length; index++) {
+  //   let findIndex = nums.indexOf(singleNum, index);
+  //   if (findIndex > -1) {
+  //     nums.splice(findIndex, 1);  // 删除之后再改变singleNum，防止两个相邻的数字；
+  //     singleNum = nums[index];
+  //   } else {
+  //     return singleNum
+  //   }
+  // }
+  // return singleNum;
+
+  let singleNum = 0;
+  for (let i = 0; i < nums.length; i++) {
+    //除了某个元素只出现一次以外，其余每个元素均出现两次 做位运算
+    singleNum ^= nums[i];
   }
   return singleNum;
 };
