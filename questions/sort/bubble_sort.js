@@ -1,36 +1,31 @@
-let arr = [10, 80, 60, 30, 90, 40, 50, 70];
+let arr = [10, 80, 40, 60, 30, 90, 40, 50, 70];
 
 const bubbleSort = (arr) => {
   for (let i = 0; i < arr.length - 1; i++) {
     for (let j = 0; j < arr.length - i - 1; j++) {
       if (arr[j] > arr[j + 1]) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        console.log("arr", arr);
       }
     }
   }
 };
 
-const bubbleSort_op = (arr) => {
-  let last_max_obj = {
-    value: arr[0],
-    ops: 0,
-  };
+const bubbleSortPlus = (arr) => {
+  let second_max_pos = 0; // 存储每次遍历的第二大数索引
   for (let i = 0; i < arr.length - 1; i++) {
-    for (let j = last_max_obj.ops; j < arr.length - i - 1; j++) {
+    let j = second_max_pos; // 从每次遍历之后的第二大数的索引开始遍历
+    second_max_pos = 0; // 每次第二层遍历开始前重置
+    for (j; j < arr.length - i - 1; j++) {
       if (arr[j] > arr[j + 1]) {
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]];
-        console.log("arr", arr);
-        if (j !== arr.length - i - 2) {
-          last_max_obj.ops = j + 1;
-          last_max_obj.value = arr[j + 1];
-          console.log("last_max_obj", last_max_obj);
+        if (j !== arr.length - i - 2 && arr[j] > arr[second_max_pos]) {
+          second_max_pos = j;
         }
       }
     }
   }
 };
 
-bubbleSort_op(arr);
+bubbleSortPlus(arr);
 
 console.log(arr);
