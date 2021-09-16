@@ -41,7 +41,6 @@ lRUCache.get(1);    // 返回 -1 (未找到)
 lRUCache.get(3);    // 返回 3
 lRUCache.get(4);    // 返回 4
 */
-
 /**
  * @param {any} value
  */
@@ -49,24 +48,32 @@ var isNil = function (value) {
   return value === null || value === undefined;
 };
 
-function LRUNode(key, value) {
+/**
+ * @param {number} key
+ * @param {number} value
+ */
+var LRUNode = function (key, value, next = null, prev = null) {
   this.key = key;
   this.value = value;
-  this.prev = null;
-  this.next = null;
-}
+  this.next = next;
+  this.prev = prev;
+};
 
 /**
  * @param {number} capacity
  */
 var LRUCache = function (capacity) {
-  this.cache = new Map();
   this.size = 0;
   this.capacity = capacity;
-  this.head = new LRUNode(null, null);
+  this.cache = new Map();
+  // 没有设置虚拟节点
+  this.head = null;
+  this.tail = null;
+  // 虚拟节点
+  /* this.head = new LRUNode(null, null);
   this.tail = new LRUNode(null, null);
   this.head.next = this.tail;
-  this.tail.prev = this.head;
+  this.tail.prev = this.head; */
 };
 
 /**
@@ -74,70 +81,83 @@ var LRUCache = function (capacity) {
  * @return {number}
  */
 LRUCache.prototype.get = function (key) {
-  const res = this.find(key);
-  if (~res) {
-    this.stack.splice(res.index, 1);
-    this.stack.unshift(res.value);
-    return res.value.get(key);
+  var node = this.cache.get(key);
+  if (!isNil(node)) {
+    this.moveToHead(node);
+    return node.value;
   }
   return -1;
 };
 
-LRUCache.prototype.find = function (key) {
-  for (let i = 0; i < this.stack.length; i++) {
-    const itemMap = this.stack[i];
-    if (itemMap.has(key)) {
-      return {
-        index: i,
-        value: itemMap,
-      };
-    }
-  }
-  return -1;
-};
-
-LRUCache.prototype.addHeadNode = function (node) {
-  // const head = this.dummyHead.next
-  // node.next = head
-  // head.prev = node
-  // node.prev = this.dummyHead
-  // this.dummyHead.next = node
-  this.head.prev = node;
+/**
+ * @param {number} node
+ */
+LRUCache.prototype.moveToHead = function (node) {
+  this.removeNode(node);
+  //改变原来node指向
   node.next = this.head;
-  this.head = node;
-  if (this.size === 0) {
-    this.tail = this.head;
-  }
-  // this.size
-  // if(this.tail)
-  // this.tail
-  // const head = this.head.next;
-  // node.next = head;
-  // head.prev = node;
-  // node.prev = this.head;
-  // this.head.next = node;
-  // node.prev = this.head;
-  // node.next = this.head.next;
-  // this.head.next.prev = node;
-  // this.head.next = node;
-  // node.next = this.head;
+  node.prev = null;
+  this.prependNode(node);
 };
 
-LRUCache.prototype.removeTail = function () {
-  const deletedTail = this.tail;
+/**
+ * @param {number} node
+ */
+LRUCache.prototype.removeNode = function (node) {
+  if (node === this.head) {
+    this.head = node.next;
+    if (this.head) {
+      this.head.prev = null;
+    }
 
-  if (this.head === this.tail) {
-    // There is only one node in linked list.
-    this.head = new LRUNode(null, null);
-    this.tail = new LRUNode(null, null);
-    this.head.next = this.tail;
-    this.tail.prev = this.head;
+    if (node === this.tail) {
+      this.tail = null;
+    }
+  } else if (this.tail === node) {
+    console.log("tailnode", node);
+    this.tail = node.prev;
+    this.tail.next = null;
+    console.log("head--tail", this.tail);
+    console.log("head--tail", this.head);
+  } else {
+    console.log("middle node", node);
+    var prevNode = node.prev;
+    var nextNode = node.next;
+    prevNode.next = nextNode;
+    nextNode.prev = prevNode;
+  }
+};
+
+/**
+ * @param {number} node
+ */
+LRUCache.prototype.prependNode = function (node) {
+  if (this.head) {
+    this.head.prev = node;
   }
 
+  this.head = node;
+  if (!this.tail) {
+    this.tail = node;
+  }
+};
+
+/**
+ * @param {number} node
+ */
+LRUCache.prototype.removeTail = function () {
+  if (!this.tail) {
+    return null;
+  }
+  const deletedTail = this.tail;
+  if (this.head === this.tail) {
+    this.head = null;
+    this.tail = null;
+    return deletedTail;
+  }
   this.tail = this.tail.prev;
-  this.tail.next = new LRUNode(null, null);
-  // this.tail.prev = this.tail;
-  // this.
+  this.tail.next = null;
+  return deletedTail;
 };
 
 /**
@@ -146,44 +166,36 @@ LRUCache.prototype.removeTail = function () {
  * @return {void}
  */
 LRUCache.prototype.put = function (key, value) {
-  const node = this.cache.get(key);
-  if (isNil(node)) {
-    const newNode = new LRUNode(key, value);
-    this.addHeadNode(newNode);
+  var node = this.cache.get(key);
+  if (!isNil(node)) {
+    node.value = value;
+    this.moveToHead(node);
+  } else {
+    var newNode = new LRUNode(key, value, this.head);
+    this.cache.set(key, newNode);
+    this.prependNode(newNode);
     this.size++;
+
     if (this.size > this.capacity) {
-      this.removeTail();
+      var tailNode = this.removeTail();
+      this.cache.delete(tailNode.key);
       this.size--;
     }
   }
-  // if (~res) {
-  //   const refleshMap = this.stack[res.index].set(key, value);
-  //   this.stack.splice(res.index, 1);
-  //   this.stack.unshift(refleshMap);
-  // } else {
-  //   const mapItem = new Map();
-  //   mapItem.set(key, value);
-  //   this.stack.unshift(mapItem);
-  //   if (this.stack.length > this.capacity) {
-  //     this.stack.length = this.capacity;
-  //   }
-  // }
 };
 
 const lRUCache = new LRUCache(2);
-var res = lRUCache.put(2, 1); // 返回 1
-console.log("res", res);
+var res = lRUCache.put(2, 3); // 返回 1
 var res = lRUCache.put(1, 1); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+var res = lRUCache.get(2);
+console.log("res", res);
 var res = lRUCache.put(3, 1); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-console.log(lRUCache.size);
-// var res = lRUCache.put(2, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-// console.log("res", res);
-// console.log(lRUCache.stack);
-// var res = lRUCache.put(4, 1); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
-// console.log("res", res);
-// console.log(lRUCache.stack);
-// var res = lRUCache.get(1); // 返回 -1 (未找到)
-// console.log("res", res);
-// var res = lRUCache.get(2); // 返回 3
-// console.log("res", res);
-// var res = lRUCache.get(4); // 返回 4
+var res = lRUCache.put(2, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+console.log("res", res);
+var res = lRUCache.put(4, 1); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+console.log("res", res);
+var res = lRUCache.get(1); // 返回 -1 (未找到)
+console.log("res", res);
+var res = lRUCache.get(2); // 返回 3
+console.log("res", res);
+var res = lRUCache.get(4); // 返回 4
