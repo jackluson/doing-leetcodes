@@ -16,23 +16,22 @@
  */
 const partition = (arr, low, high) => {
   const pivot = arr[high];
-  let left = low - 1;
+  let left = low;
   for (let i = low; i < high; i++) {
     if (arr[i] < pivot) {
-      left += 1;
       if (left !== i) {
         [arr[left], arr[i]] = [arr[i], arr[left]];
       }
+      left += 1;
     }
   }
-  left += 1;
   if (left !== high) {
     [arr[left], arr[high]] = [arr[high], arr[left]];
   }
   return left;
 };
 
-let arr = [10, 80, 60, 30, 90, 40, 50, 70];
+let arr = [10, 88, 8, 60, 30, 90, 40, 50, 70];
 const high = arr.length;
 
 /**
