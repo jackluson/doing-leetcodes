@@ -1,6 +1,7 @@
 // ** Record ** //
 /*
 1. date: 2022-5-7 -- 9min
+2. date: 2022-5-9 -- 10:39
 */
 
 const insertSort = (arr) => {};

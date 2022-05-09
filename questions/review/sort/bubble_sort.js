@@ -1,6 +1,7 @@
 // ** Record ** //
 /*
-date: 2022-5-7 -- 10min
+1. date: 2022-5-7 -- 10min
+2. date: 2022-5-9 -- 02: 10
 */
 
 const bubbleSort = (arr) => {};
