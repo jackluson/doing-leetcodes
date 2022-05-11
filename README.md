@@ -36,6 +36,11 @@
 
 - [🔥 LeetCode 热题 HOT 100](https://leetcode.cn/problem-list/2cktkvj/)
 
+### Blog
+
+- https://github.com/labuladong/fucking-algorithm
+- https://github.com/azl397985856/leetcode
+
 ### Reference
 
 [大家都是如何刷 LeetCode 的？](https://www.zhihu.com/question/280279208)
