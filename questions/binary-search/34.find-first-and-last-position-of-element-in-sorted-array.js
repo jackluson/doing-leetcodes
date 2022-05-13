@@ -46,9 +46,9 @@ var search = function (nums, target, isBorder) {
   let max = nums.length - 1;
   let isRightBorder = false;
   let isLeftBorder = false;
-  if (isBorder === "left") {
+  if (isBorder === 'left') {
     isLeftBorder = true;
-  } else if (isBorder === "right") {
+  } else if (isBorder === 'right') {
     isRightBorder = true;
   }
   while (min <= max) {
@@ -85,8 +85,8 @@ var search = function (nums, target, isBorder) {
  * @return {number[]}
  */
 var searchRange = function (nums, target) {
-  let minIndex = search(nums, target, "left");
-  let maxIndex = search(nums, target, "right");
+  let minIndex = search(nums, target, 'left');
+  let maxIndex = search(nums, target, 'right');
 
   return [minIndex, maxIndex];
 };

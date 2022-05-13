@@ -34,6 +34,7 @@
 
 ### 题目专栏
 
+- [初级算法](https://leetcode.cn/leetbook/detail/top-interview-questions-easy/)
 - [🔥 LeetCode 热题 HOT 100](https://leetcode.cn/problem-list/2cktkvj/)
 
 ### Blog
@@ -43,4 +44,6 @@
 
 ### Reference
 
-[大家都是如何刷 LeetCode 的？](https://www.zhihu.com/question/280279208)
+- [论如何 4 个月高效刷满 500 题并形成长期记忆](https://leetcode.cn/circle/discuss/jq9Zke/)
+
+- [大家都是如何刷 LeetCode 的？](https://www.zhihu.com/question/280279208)
